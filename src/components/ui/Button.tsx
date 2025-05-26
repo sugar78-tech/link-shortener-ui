@@ -1,10 +1,10 @@
 import cslx from "clsx";
-import type { ButtonHTMLAttributes, ComponentType, SVGProps } from "react";
+import type { ButtonHTMLAttributes } from "react";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
   variant?: "primary" | "secondary";
-  Icon?: ComponentType<SVGProps<SVGSVGElement>>;
+  Icon?: React.ReactNode;
 };
 
 const buttonVariants = (variant: ButtonProps["variant"] = "primary") =>
@@ -22,7 +22,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button className={buttonVariants(variant)} {...props}>
-      {Icon && <Icon />}
+      {Icon && Icon}
       {children}
     </button>
   );
