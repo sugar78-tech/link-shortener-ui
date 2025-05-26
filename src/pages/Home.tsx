@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 
-import { useConfig } from "@/hooks/useConfig";
-import { useLinks } from "@/hooks/useLinks";
 import type { GetLinkDto } from "@/models/Link";
+import { useLinkService } from "@/services/linkService";
 
 export const Home = () => {
-  const { apiUrl } = useConfig();
   const [url, setUrl] = useState("");
   const [shortedUrl, setShortedUrl] = useState("");
-  const { getAllLinks } = useLinks();
+  const { createLink, getAllLinks } = useLinkService();
   const [links, setLinks] = useState<GetLinkDto[]>([]);
 
   const fetchLinks = async () => {
@@ -21,7 +20,8 @@ export const Home = () => {
   }, []);
 
   return (
-    <main className="flex h-screen flex-col items-center bg-amber-50">
+    <main className="flex h-screen flex-col items-center bg-gradient-to-b from-purple-400 to-gray-900 to-20%">
+      <ToastContainer />
       <h1>AppCortador de URLs</h1>
       <input
         type="text"
@@ -36,16 +36,8 @@ export const Home = () => {
         onChange={(e) => setShortedUrl(e.target.value)}
       />
       <button
-        onClick={async () => {
-          const response = await fetch(`${apiUrl}/links`, {
-            method: "POST",
-            body: JSON.stringify({ url, shortedUrl }),
-            headers: {
-              "Content-Type": "application/json"
-            }
-          });
-          const data = await response.text();
-          console.log(data);
+        onClick={() => {
+          createLink(url, shortedUrl);
         }}
       >
         Cortar
