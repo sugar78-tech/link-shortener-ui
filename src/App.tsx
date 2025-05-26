@@ -1,11 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import { useConfig } from "./hooks/useConfig";
+import { useLinks } from "./hooks/useLinks";
+import type { GetLinkDto } from "./models/Link";
 
 import "./App.css";
-import { useConfig } from "./hooks/useConfig";
 function App() {
   const { apiUrl } = useConfig();
   const [url, setUrl] = useState("");
   const [shortedUrl, setShortedUrl] = useState("");
+  const { getAllLinks } = useLinks();
+  const [links, setLinks] = useState<GetLinkDto[]>([]);
+
+  const fetchLinks = async () => {
+    const links = await getAllLinks();
+    setLinks(links);
+  };
+
+  useEffect(() => {
+    fetchLinks();
+  }, []);
 
   return (
     <main className="flex h-screen flex-col items-center bg-amber-50">
@@ -37,6 +51,19 @@ function App() {
       >
         Cortar
       </button>
+      <section>
+        <h2>Links</h2>
+        <ul>
+          {links &&
+            links.map((link) => (
+              <li key={link.id}>
+                <a href={link.url} target="_blank" rel="noreferrer">
+                  {link.url}
+                </a>
+              </li>
+            ))}
+        </ul>
+      </section>
     </main>
   );
 }
