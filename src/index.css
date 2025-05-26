@@ -64,6 +64,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-display: "Funnel Display", system-ui, -apple-system
   color: #fff;
 }
