@@ -13,7 +13,8 @@ export const useLinkService = () => {
         const data = await response.json();
         return data;
       } else {
-        toast.error("Error al obtener los links");
+        const error = await response.json();
+        toast.error(`Error al obtener los links: ${error.message}`);
         return [];
       }
     } catch (error) {
@@ -35,7 +36,9 @@ export const useLinkService = () => {
       if (response.ok) {
         toast.success("Link cortado con éxito");
       } else {
-        toast.error("Error al cortar link");
+        const error = await response.json();
+        toast.error(`Error al cortar link:
+					${error.message}`);
       }
     } catch (error) {
       console.error(error);
